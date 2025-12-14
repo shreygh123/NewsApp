@@ -22,7 +22,7 @@ const News = (props) => {
         setLoading(true)
         let data = await fetch(url);
         if (!data.ok) {
-          console.error("Fetch failed:", response.status);
+          console.error("Fetch failed:", data.status);
           setLoading(false);
           return;
         }
@@ -45,7 +45,7 @@ const News = (props) => {
 
         let data = await fetch(url);
         if (!data.ok) {
-          console.error("FetchData failed:", response.status);
+          console.error("FetchData failed:", data.status);
           return;
         }
         let allData = await data.json();
