@@ -15,16 +15,22 @@ const News = (props) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
     }
     const update = async () => {
+      // try {
         props.setProgress(10);
         const url = `https://news-proxy-m325oy2wk-shreyash-ghuges-projects.vercel.app/api/news?country=${props.country}&category=${props.category}&page=${page}&pageSize=${props.pageSize}`;
         props.setProgress(30);
         setLoading(true)
         let data = await fetch(url);
+        if (!data.ok) {
+          console.error("Fetch failed:", response.status);
+          setLoading(false);
+          return;
+        }
         props.setProgress(70);
         let allData = await data.json();
-        setArticles(allData.articles)
+        setArticles(allData.articles || [])
         setLoading(false)
-        settotalResults(allData.totalResults)
+        settotalResults(allData.totalResults || 0)
         props.setProgress(100);
         console.log(url)
     }
@@ -34,16 +40,17 @@ const News = (props) => {
     }, []);
 
     const fetchData = async () => {
-
-
         const url = `https://news-proxy-m325oy2wk-shreyash-ghuges-projects.vercel.app/api/news?country=${props.country}&category=${props.category}&page=${page + 1}&pageSize=${props.pageSize}`;
         setPage(page + 1)
 
         let data = await fetch(url);
+        if (!data.ok) {
+          console.error("FetchData failed:", response.status);
+          return;
+        }
         let allData = await data.json();
-        setArticles(articles.concat(allData.articles))
-
-        settotalResults(allData.totalResults)
+        setArticles(prev => prev.concat(allData.articles || []));
+        settotalResults(allData.totalResults || 0);
     }
     return (
         <>
@@ -53,7 +60,7 @@ const News = (props) => {
                 <InfiniteScroll
                     dataLength={articles.length}
                     next={fetchData}
-                    hasMore={articles.length !== totalResults}
+                    hasMore={articles.length < totalResults}
                     loader={<Loadingpic />}
                 >
                     <div className="row">
