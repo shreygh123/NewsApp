@@ -16,7 +16,7 @@ const News = (props) => {
     }
     const update = async () => {
         props.setProgress(10);
-        const url = `https://news-proxy-m325oy2wk-shreyash-ghuges-projects.vercel.app?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+        const url = `https://news-proxy-m325oy2wk-shreyash-ghuges-projects.vercel.app/api/news?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
         props.setProgress(30);
         setLoading(true)
         let data = await fetch(url);
@@ -36,7 +36,7 @@ const News = (props) => {
     const fetchData = async () => {
 
 
-        const url = `https://news-proxy-m325oy2wk-shreyash-ghuges-projects.vercel.app?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&pageSize=${props.pageSize}`;
+        const url = `https://news-proxy-m325oy2wk-shreyash-ghuges-projects.vercel.app/api/news?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&pageSize=${props.pageSize}`;
         setPage(page + 1)
 
         let data = await fetch(url);
